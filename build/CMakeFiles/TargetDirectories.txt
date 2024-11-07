@@ -1,0 +1,3 @@
+C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/build/CMakeFiles/audio_visualizer_c.dir
+C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/build/CMakeFiles/edit_cache.dir
+C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/build/CMakeFiles/rebuild_cache.dir

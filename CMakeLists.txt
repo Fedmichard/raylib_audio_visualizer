@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
 project(audio_visualizer_c)
 
-# Set C++ Standard
-set(CMAKE_CXX_STANDARD 17)
-
 # Include Directories
 include_directories(header_files)
 include_directories(raylib)

@@ -1,44 +1,61 @@
 #include "raylib.h"
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-int main(void)
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+#define MAX_COLUMNS 20
+#define WIDTH 800
+#define HEIGHT 600
+#define MOVEMENT_SPEED 5
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+int main() {
+    // Initialize our window
+    InitWindow(WIDTH, HEIGHT, "Audio Visualizer");
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    // Set our window to run at 60 frames-per-second
+    SetTargetFPS(60);
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
+    // Ball Info
+    typedef struct Ball {
+        double posX;
+        double posY;
+        Color color;
+        int size;
+    } Ball;
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+    Ball ball1 = {.color = BLUE, .posX = WIDTH / 2, .posY = HEIGHT / 2, .size = 20};
 
-            ClearBackground(RAYWHITE);
+    /** SPLIT INTO 3 PARTS
+     * 1. Event Handling
+     * 2. Updating Positions of game objects
+     * 3. Drawing Objects (draw all objects in new positions)
+     * !WindowShouldClose() Checks if the X button or esc is pressed
+     */
+    while (!WindowShouldClose()) {
+        // 1. Event Handling
+        if (IsKeyDown(KEY_D)) {
+            ball1.posX += MOVEMENT_SPEED;
+        } if (IsKeyDown(KEY_A)) {
+            ball1.posX -= MOVEMENT_SPEED;
+        } if (IsKeyDown(KEY_W)) {
+            ball1.posY -= MOVEMENT_SPEED;
+        } if (IsKeyDown(KEY_S)) {
+            ball1.posY += MOVEMENT_SPEED;
+        }
 
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        // 2. Updating Positions of game objects
 
-        EndDrawing();
-        //----------------------------------------------------------------------------------
+        // 3. Drawing Objects
+        BeginDrawing(); // creates blank canvas so we can draw game object on
+
+        // To handle updating draw calls, we must clear the window each iteration
+        // so it doesn't repeatedly leave old draw call
+        ClearBackground(WHITE);
+
+        DrawCircle(ball1.posX, ball1.posY, ball1.size, ball1.color);
+
+        EndDrawing(); // End canvas drawing and swaps buffers
     }
 
     // De-Initialization
-    //--------------------------------------------------------------------------------------
     CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
     return 0;
 }

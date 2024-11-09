@@ -3,6 +3,7 @@ project(audio_visualizer_c)
 
 # Include Directories
 include_directories(header_files)
+include_directories(resources)
 include_directories(raylib)
 
 # Add Raylib static library

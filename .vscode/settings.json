@@ -21,6 +21,10 @@
         "stdexcept": "cpp",
         "*.tcc": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "raygui.h": "c",
+        "array": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }

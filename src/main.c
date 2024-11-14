@@ -34,7 +34,7 @@ float b = 255;
 float noise3D(float x, float y, float z, float time) {
     // Use very high frequency for the x, y, z terms to generate tiny ripples
     //                    ripples       Intensity frequency
-    float noise = sinf(x * ripples + time * intensity) * frequency // High frequency for tiny ripples
+    float noise = sinf(x * ripples + time * intensity) * (frequency) // High frequency for tiny ripples
                 + sinf(y * ripples + time * intensity) * (frequency)  // Higher frequency and smaller intensity
                 + sinf(z * ripples + time * intensity) * (frequency); // Even higher frequency for finer detail
     return noise;
@@ -122,6 +122,7 @@ int main() {
 
         // 2. Updating Positions of game objects
         UpdateCamera(&cam, CAMERA_ORBITAL);
+        
         // Apply Noise
         for (int i = 0; i < sphereMesh.vertexCount; i++) {
             float* vertices = sphereMesh.vertices;
@@ -144,9 +145,10 @@ int main() {
             // Apply the displacement and keep the vertex on the sphere's surface
             // distance maintains it's maximum outwards distance, keeps it from moving off screen
             vertices[i * 3 + 0] = (x + displacement * norm_x) / distance * 1.0f;
-            vertices[i * 3 + 1] = (y + displacement * norm_y) / distance * 1.0;
-            vertices[i * 3 + 2] = (z + displacement * norm_z) / distance * 1.0;
+            vertices[i * 3 + 1] = (y + displacement * norm_y) / distance * 1.0f;
+            vertices[i * 3 + 2] = (z + displacement * norm_z) / distance * 1.0f;
         }
+
         // Adjust noise multiplier based on volume
         for (int i = 0; i < 400; i++)
         {

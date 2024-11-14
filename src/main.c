@@ -77,9 +77,9 @@ int main() {
 
     // Initialize our camera
     Camera cam = {0};
-    cam.position = (Vector3) {0.0f, 3.0f, 4.0f};
-    cam.target = (Vector3) {0.0f, 0.0f, 0.0f};
-    cam.up = (Vector3) {0.0f, 1.0f, 0.0f};
+    cam.position = (Vector3) { 0.0f, 3.0f, 4.0f };
+    cam.target = (Vector3) { 0.0f, 0.0f, 0.0f };
+    cam.up = (Vector3) { 0.0f, 1.0f, 0.0f };
     cam.fovy = 45.0f;
     cam.projection = CAMERA_PERSPECTIVE;
 
@@ -165,7 +165,7 @@ int main() {
             // begin 3D space
             BeginMode3D(cam);
                 // Draw our sphere model
-                DrawModelWires(sphere, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, (Color){r, g, b, 255});
+                DrawModelWires(sphere, (Vector3) { 0.0f, 0.0f, 0.0f }, 1.0f, (Color){ r, g, b, 255 });
             EndMode3D();
 
             /**
@@ -173,16 +173,16 @@ int main() {
             */
 
             // Music status variables
-            GuiPanel((Rectangle){675, 100, 100, 25}, "     Default."); // default song
+            GuiPanel((Rectangle){ 675, 100, 100, 25 }, "     Default."); // default song
 
             if (showSuccess) {
-                int success = GuiPanel((Rectangle){675, 100, 100, 25}, "    Success!"); // successfully uploaded
+                int success = GuiPanel((Rectangle){ 675, 100, 100, 25 }, "    Success!"); // successfully uploaded
             }
             if (showFail) {
-                int fail = GuiPanel((Rectangle){675, 100, 100, 25}, "      Failed."); // failed to uploaded
+                int fail = GuiPanel((Rectangle){ 675, 100, 100, 25 }, "      Failed."); // failed to uploaded
             }
 
-            if (GuiButton((Rectangle){675, 25, 100, 50}, "Upload")) {
+            if (GuiButton((Rectangle){ 675, 25, 100, 50 }, "Upload")) {
                 void* org = song;
                 song = tinyfd_openFileDialog("Explorer", "", 0, (const char*[])
                                             {"*.wav", "*.mp3", "*.ogg"}, "Audio Files", 0);
@@ -200,20 +200,26 @@ int main() {
             }
 
             // Music Interaction Portion
-            if (GuiButton((Rectangle){675, 75, 50, 25}, "Play")) {
+            if (GuiButton((Rectangle){ 675, 75, 50, 25 }, "Play")) {
                 PlayMusicStream(music);
             }
 
-            if (GuiButton((Rectangle){725, 75, 50, 25}, "Stop")) {
+            if (GuiButton((Rectangle){ 725, 75, 50, 25 }, "Stop")) {
                 PauseMusicStream(music);
             }
 
-            GuiSliderBar((Rectangle){675, 125, 100, 25}, "Level", "", &multiplier, 0.0f, 2.5f);
+            // GuiSliderBar((Rectangle){ 675, 125, 100, 25 }, "Level", "", &multiplier, 0.0f, 2.5f);
+            GuiProgressBar((Rectangle){ 675, 125, 100, 25 }, "Level", "", &multiplier, 0.0f, 2.5f);
 
             // Color Picker Portion
-            GuiSlider((Rectangle){675, 150, 100, 10}, "R", "", &r, 0, 255);
-            GuiSlider((Rectangle){675, 160, 100, 10}, "G", "", &g, 0, 255);
-            GuiSlider((Rectangle){675, 170, 100, 10}, "B", "", &b, 0, 255);
+            GuiSlider((Rectangle){ 675, 150, 100, 10 }, "R", "", &r, 0, 255);
+            GuiSlider((Rectangle){ 675, 160, 100, 10 }, "G", "", &g, 0, 255);
+            GuiSlider((Rectangle){ 675, 170, 100, 10 }, "B", "", &b, 0, 255);
+
+            // Sphere portion
+            GuiSlider((Rectangle){ 75, 100, 100, 10 }, "Ripples", "", &ripples, 0, 25);
+            GuiSlider((Rectangle){ 75, 110, 100, 10 }, "Intensity", "", &intensity, 0, 25);
+            GuiSlider((Rectangle){ 75, 120, 100, 10 }, "Frequency", "", &frequency, 0.01, 0.075);
 
             // FPS Counter
             // DrawFPS(10, 10);

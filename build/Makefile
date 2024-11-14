@@ -152,6 +152,30 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\audio_visualizer_c.dir\build.make CMakeFiles/audio_visualizer_c.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/tinyfiledialogs.obj: src/tinyfiledialogs.c.obj
+.PHONY : src/tinyfiledialogs.obj
+
+# target to build an object file
+src/tinyfiledialogs.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\audio_visualizer_c.dir\build.make CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj
+.PHONY : src/tinyfiledialogs.c.obj
+
+src/tinyfiledialogs.i: src/tinyfiledialogs.c.i
+.PHONY : src/tinyfiledialogs.i
+
+# target to preprocess a source file
+src/tinyfiledialogs.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\audio_visualizer_c.dir\build.make CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.i
+.PHONY : src/tinyfiledialogs.c.i
+
+src/tinyfiledialogs.s: src/tinyfiledialogs.c.s
+.PHONY : src/tinyfiledialogs.s
+
+# target to generate assembly for a file
+src/tinyfiledialogs.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\audio_visualizer_c.dir\build.make CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.s
+.PHONY : src/tinyfiledialogs.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -164,6 +188,9 @@ help:
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
+	@echo ... src/tinyfiledialogs.obj
+	@echo ... src/tinyfiledialogs.i
+	@echo ... src/tinyfiledialogs.s
 .PHONY : help
 
 

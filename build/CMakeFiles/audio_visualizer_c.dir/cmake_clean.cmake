@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/audio_visualizer_c.dir/src/main.c.obj"
   "CMakeFiles/audio_visualizer_c.dir/src/main.c.obj.d"
+  "CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj"
+  "CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj.d"
   "audio_visualizer_c.exe"
   "audio_visualizer_c.exe.manifest"
   "audio_visualizer_c.pdb"

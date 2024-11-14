@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/src/main.c" "CMakeFiles/audio_visualizer_c.dir/src/main.c.obj" "gcc" "CMakeFiles/audio_visualizer_c.dir/src/main.c.obj.d"
+  "C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/src/tinyfiledialogs.c" "CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj" "gcc" "CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

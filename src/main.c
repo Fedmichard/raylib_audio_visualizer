@@ -1,39 +1,56 @@
-#include "raylib.h"
-#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "tinyfiledialogs.h"
+#include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
 #define MAX_COLUMNS 20
 #define WIDTH 800
 #define HEIGHT 600
-#define MOVEMENT_SPEED
-#define INTENSITY 5.0f
 
-float ripples = 12.0f;
-float intensity = 8.0f;
-float frequency = 0.025f;
-float num = 0.4f;
+// Noise Variables
+float ripples = 12.0f; // Amount of ripples
+float intensity = 8.0f; // amplitude or the height of the wave from its center
+float frequency = 0.025f; // how many cycles the wave completes within a certain interval
+float multiplier = 1.0f; // our noise multipler
 
+// Audio Processing Variables
 static float exponent = 1.0f; // Audio exponentiation value
 static float averageVolume[400] = { 0.0f }; // Average volume history
+char* song = "../resources/The Dread.mp3";
 
-float perlinNoise3D(float x, float y, float z, float time) {
+/**
+ * function that takes in an x, y, z value of a point on our sphere mesh
+ * takes a time value to animate our point over time
+ * sinf produces a wave-like 
+ */
+float noise3D(float x, float y, float z, float time) {
     // Use very high frequency for the x, y, z terms to generate tiny ripples
     //                    ripples       Intensity frequency
     float noise = sinf(x * ripples + time * intensity) * frequency // High frequency for tiny ripples
-                + sinf(y * ripples + time * intensity) * frequency  // Higher frequency and smaller intensity
-                + sinf(z * ripples + time * intensity) * frequency; // Even higher frequency for finer detail
+                + sinf(y * ripples + time * intensity) * (frequency)  // Higher frequency and smaller intensity
+                + sinf(z * ripples + time * intensity) * (frequency); // Even higher frequency for finer detail
     return noise;
 }
 
-void ProcessAudio(void *buffer, unsigned int frames)
-{
+/**
+ * Attaching to our entire audio pipeline, receives the samples as floats
+ * samples: a single point of audio data. A snapshot of the amplitude of some audio signal
+ *          when audio is recorded, it is captured many thousands of times per sec
+ *          each of these are samples. 44.1 kHz, 44,100 samples per second
+ * sample rate: how many samples are captured per second, the higher the sample rate the more
+ *              audio can be processed directly to digital with more precision and quality.
+ * buffer: temporary storage area to hold data while it's being transferred or processed, in this
+ *         situation it's a spot that audio data (samples) 
+ * frame: a group of all samples that happened in that frame, in our example it's
+ */
+void processAudio(void *buffer, unsigned int frames) {
     float *samples = (float *)buffer;   // Samples internally stored as <float>s
     float average = 0.0f;               // Temporary average volume
 
-    for (unsigned int frame = 0; frame < frames; frame++)
-    {
+    for (unsigned int frame = 0; frame < frames; frame++) {
         float *left = &samples[frame * 2 + 0], *right = &samples[frame * 2 + 1];
 
         *left = powf(fabsf(*left), exponent) * ( (*left < 0.0f)? -1.0f : 1.0f );
@@ -63,9 +80,10 @@ int main() {
 
     // Initialize our audio system
     InitAudioDevice();
-    AttachAudioMixedProcessor(ProcessAudio);
-    Music music = LoadMusicStream("../resources/yt5s.com - Ghostpocalypse (Action Music) - Vanoss Gaming Background Music (HD) (128 kbps) (1).mp3");
-    PlayMusicStream(music);
+    AttachAudioMixedProcessor(processAudio); // Attaches an audio processor to and returns fkiats
+    // load music and play it
+    Music music = LoadMusicStream(song);
+    // PlayMusicStream(music);
     // Set our window to run at inf frames-per-second
     SetTargetFPS(-1);
 
@@ -76,6 +94,9 @@ int main() {
 
     // time value of our workspace
     float time = 0.0f;
+
+    bool showSuccess = false;
+    bool showFail = false;
 
     /** SPLIT INTO 3 PARTS
      * 1. Event Handling
@@ -96,7 +117,7 @@ int main() {
 
         // 2. Updating Positions of game objects
         UpdateCamera(&cam, CAMERA_ORBITAL);
-        // Apply perlin Noise
+        // Apply Noise
         for (int i = 0; i < sphereMesh.vertexCount; i++) {
             float* vertices = sphereMesh.vertices;
             float x = vertices[i * 3 + 0];
@@ -104,10 +125,10 @@ int main() {
             float z = vertices[i * 3 + 2];
 
             // Generate the noise value for this vertex
-            float noise = perlinNoise3D(x, y, z, time);
+            float noise = noise3D(x, y, z, time);
 
             // Decrease displacement to create smaller, lower-intensity ripples
-            float displacement = (noise) * num;  // Lower displacement for less intensity
+            float displacement = noise * multiplier;  // Lower displacement for less intensity
 
             // Normalize the vertex direction to maintain spherical shape
             float distance = sqrtf(x * x + y * y + z * z);  // Calculate distance from origin
@@ -116,15 +137,15 @@ int main() {
             float norm_z = z / distance;
 
             // Apply the displacement and keep the vertex on the sphere's surface
+            // distance maintains it's maximum outwards distance, keeps it from moving off screen
             vertices[i * 3 + 0] = (x + displacement * norm_x) / distance * 1.0f;
-            vertices[i * 3 + 1] = (y + displacement * norm_y) / distance * 1.0f;
-            vertices[i * 3 + 2] = (z + displacement * norm_z) / distance * 1.0f;
+            vertices[i * 3 + 1] = (y + displacement * norm_y) / distance * 1.0;
+            vertices[i * 3 + 2] = (z + displacement * norm_z) / distance * 1.0;
         }
-
-
+        // Adjust noise multiplier based on volume
         for (int i = 0; i < 400; i++)
         {
-            num = (averageVolume[i] * 5) + 0.1f;
+            multiplier = (averageVolume[i] * 7) + 0.1f;
         }
 
         // Update the mesh with modified vertices
@@ -139,23 +160,44 @@ int main() {
             // begin 3D space
             BeginMode3D(cam);
                 // Draw our sphere model
-                DrawModelWires(sphere, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, GREEN);
+                DrawModelWires(sphere, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, RED);
             EndMode3D();
 
             // GUI
-            if (GuiButton((Rectangle){675, 25, 100, 50}, "Upload")) {
+            int defaulted = GuiPanel((Rectangle){675, 100, 100, 25}, "Default.");
 
+            if (showSuccess) {
+                int success = GuiPanel((Rectangle){675, 100, 100, 25}, "Success!");
+            }
+            if (showFail) {
+                int fail = GuiPanel((Rectangle){675, 100, 100, 25}, "Failed.");
+            }
+
+            if (GuiButton((Rectangle){675, 25, 100, 50}, "Upload")) {
+                void* org = song;
+                song = tinyfd_openFileDialog("Explorer", "", 0, (const char*[])
+                                            {"*.wav", "*.mp3", "*.ogg"}, "Audio Files", 0);
+                // if no song was loaded in
+                if (!song) {song = org;}
+                music = LoadMusicStream(song);
+
+                if (IsMusicReady(music)) {
+                    showFail = false;
+                    showSuccess = true;
+                } else {
+                    showSuccess = false;
+                    showFail = true;
+                }
             }
 
             if (GuiButton((Rectangle){675, 75, 50, 25}, "Play")) {
                 PlayMusicStream(music);
-                num = (sinf(playTime * 10.0f) + 1.0f) * 1.25f;
             }
 
             if (GuiButton((Rectangle){725, 75, 50, 25}, "Stop")) {
                 PauseMusicStream(music);
             }
-            if (GuiSliderBar((Rectangle){675, 125, 100, 25}, "Effect", "#", &num, 0.0f, 2.5f)) {
+            if (GuiSliderBar((Rectangle){675, 125, 100, 25}, "Effect", "#", &multiplier, 0.0f, 2.5f)) {
 
             }
             

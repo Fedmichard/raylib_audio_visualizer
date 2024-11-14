@@ -4,5 +4,11 @@
   "command": "C:\\msys64\\mingw64\\bin\\gcc.exe  @CMakeFiles/audio_visualizer_c.dir/includes_C.rsp -g -o CMakeFiles\\audio_visualizer_c.dir\\src\\main.c.obj -c C:\\Users\\franc\\Documents\\Personal_Projects\\raylib_audio_visualizer\\src\\main.c",
   "file": "C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/src/main.c",
   "output": "CMakeFiles/audio_visualizer_c.dir/src/main.c.obj"
+},
+{
+  "directory": "C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe  @CMakeFiles/audio_visualizer_c.dir/includes_C.rsp -g -o CMakeFiles\\audio_visualizer_c.dir\\src\\tinyfiledialogs.c.obj -c C:\\Users\\franc\\Documents\\Personal_Projects\\raylib_audio_visualizer\\src\\tinyfiledialogs.c",
+  "file": "C:/Users/franc/Documents/Personal_Projects/raylib_audio_visualizer/src/tinyfiledialogs.c",
+  "output": "CMakeFiles/audio_visualizer_c.dir/src/tinyfiledialogs.c.obj"
 }
 ]

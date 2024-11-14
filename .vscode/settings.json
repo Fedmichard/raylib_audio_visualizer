@@ -25,6 +25,9 @@
         "raygui.h": "c",
         "array": "c",
         "tuple": "c",
-        "utility": "c"
+        "utility": "c",
+        "raylib.h": "c",
+        "stdlib.h": "c",
+        "windows.h": "c"
     }
 }

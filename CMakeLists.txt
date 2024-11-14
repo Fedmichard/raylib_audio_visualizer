@@ -14,7 +14,7 @@ set_target_properties(RAYLIB PROPERTIES
 )
 
 # Add the executable
-add_executable(audio_visualizer_c src/main.c)
+add_executable(audio_visualizer_c src/main.c src/tinyfiledialogs.c)
 
 # Link the Raylib library to the executable
 target_link_libraries(audio_visualizer_c PRIVATE RAYLIB)

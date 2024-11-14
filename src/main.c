@@ -18,13 +18,18 @@ float multiplier = 1.0f; // our noise multipler
 
 // Audio Processing Variables
 static float exponent = 1.0f; // Audio exponentiation value
-static float averageVolume[400] = { 0.0f }; // Average volume history
-char* song = "../resources/The Dread.mp3";
+static float averageVolume[400] = { 0.0f }; // buffer to store Average volume history
+char* song = "../resources/The Dread.mp3"; // set to a default song in resources file
+
+// Color picker
+float r = 255;
+float g = 255;
+float b = 255;
 
 /**
  * function that takes in an x, y, z value of a point on our sphere mesh
  * takes a time value to animate our point over time
- * sinf produces a wave-like 
+ * sinf produces a wave-like variations 
  */
 float noise3D(float x, float y, float z, float time) {
     // Use very high frequency for the x, y, z terms to generate tiny ripples
@@ -160,17 +165,21 @@ int main() {
             // begin 3D space
             BeginMode3D(cam);
                 // Draw our sphere model
-                DrawModelWires(sphere, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, RED);
+                DrawModelWires(sphere, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, (Color){r, g, b, 255});
             EndMode3D();
 
-            // GUI
-            int defaulted = GuiPanel((Rectangle){675, 100, 100, 25}, "Default.");
+            /**
+            * GUI SECTION; After 3D mode but before ending draw, so gui overlays on top
+            */
+
+            // Music status variables
+            GuiPanel((Rectangle){675, 100, 100, 25}, "     Default."); // default song
 
             if (showSuccess) {
-                int success = GuiPanel((Rectangle){675, 100, 100, 25}, "Success!");
+                int success = GuiPanel((Rectangle){675, 100, 100, 25}, "    Success!"); // successfully uploaded
             }
             if (showFail) {
-                int fail = GuiPanel((Rectangle){675, 100, 100, 25}, "Failed.");
+                int fail = GuiPanel((Rectangle){675, 100, 100, 25}, "      Failed."); // failed to uploaded
             }
 
             if (GuiButton((Rectangle){675, 25, 100, 50}, "Upload")) {
@@ -190,6 +199,7 @@ int main() {
                 }
             }
 
+            // Music Interaction Portion
             if (GuiButton((Rectangle){675, 75, 50, 25}, "Play")) {
                 PlayMusicStream(music);
             }
@@ -197,12 +207,16 @@ int main() {
             if (GuiButton((Rectangle){725, 75, 50, 25}, "Stop")) {
                 PauseMusicStream(music);
             }
-            if (GuiSliderBar((Rectangle){675, 125, 100, 25}, "Effect", "#", &multiplier, 0.0f, 2.5f)) {
 
-            }
-            
+            GuiSliderBar((Rectangle){675, 125, 100, 25}, "Level", "", &multiplier, 0.0f, 2.5f);
+
+            // Color Picker Portion
+            GuiSlider((Rectangle){675, 150, 100, 10}, "R", "", &r, 0, 255);
+            GuiSlider((Rectangle){675, 160, 100, 10}, "G", "", &g, 0, 255);
+            GuiSlider((Rectangle){675, 170, 100, 10}, "B", "", &b, 0, 255);
+
             // FPS Counter
-            DrawFPS(10, 10);
+            // DrawFPS(10, 10);
         EndDrawing(); // End canvas drawing and swaps buffers
     }
 
